@@ -3,10 +3,13 @@
 #This script functions as a universal updater for various distributions of Linux.
 
 #This script will be installed in the /usr/local/bin to avoid conflicting with any system installed binaries.
-#It will output logs to a purpose built log directory in the home folder, but that can be changed if you wish.
+#if you wish to limit who can edit this script you may need to run "sudo chown" and modify it to your needs.
+#It will output logs to a purpose built log directory in /var/log such as "updater" with both pass and fail logs.
 
 now=$(date)
 version=/etc/os-release
+logfile=/var/log/updater/updater-success.log
+errorfile=/var/log/updater/updater-error.log
 
 echo "Hello, welcome to my updater script."
 echo 
@@ -19,26 +22,46 @@ echo "You are currently logged in as: $USER"
 #This section is only run if the system is using Pacman.
 if grep -q "Arch" $version
 then
-	sudo pacman -Syu
+	sudo pacman -Syu 1>>$logfile 2>>$errorfile
+	if [ $? -ne 0 ]
+     then 
+          echo "An error has occurred while updating. Please check $errorfile for details."
+     fi
 fi
 
 #This section is only run if the system is using the APT manager.
 if grep -q "Debian" $version || grep -q "Ubuntu" $version
 then
 	sudo apt update
-	sudo apt upgrade
+	sudo apt upgrade 1>>$logfile 2>>$errorfile
+	if [ $? -ne 0 ]
+	then
+	     echo "An error has occurred while updating. Please check $errorfile for details."
+	fi
 fi
 
 #This section is only run if the system uses the Portage package manager.
+#The -auDN flags stand for "--ask","--upate","--deep", and "--newuse".
 if grep -q "Gentoo" $version
 then
 	sudo emerge --sync
-	sudo emerge --ask --update --deep --newuse @world
+	sudo emerge -auDN @world 1>>$logfile 2>>$errorfile
+	if [ $? -ne 0 ] 
+	then
+	     echo "An error has occurred while updating. Please check $errorfile for details."
+	fi
 fi
 
 #This section is only run if the system uses the DNF package manager.
 if grep -q "Rocky" $version || grep -q "RHEL" $version
 then
-	sudo dnf update
+	sudo dnf update 1>>$logfile 2>>$errorfile
+	if [ $? -ne 0 ]
+	then
+	     echo "An error has occurred while updating. Please check $errorfile for details."
+	fi  
 fi
 
+#This script doesn't use any of the removal commands such as 'apt autoremove' for Debian or '--depclean' for Gentoo.
+#I omitted those functions due to how damaging they can be if done incorrectly. 
+#If you wish to add those features you would need to add them after the respective update command.
