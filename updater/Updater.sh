@@ -18,11 +18,17 @@ sleep 1
 echo "The current system time and date is: $now"
 echo "You are currently logged into: $HOSTNAME"
 echo "You are currently logged in as: $USER"
+echo 
+
+echo "The script will now check your distribution and apply any available updates."
+sleep 1
 
 #This section is only run if the system is using Pacman.
+#This makes use of the 'yes' package to automatically accept the user prompt to update.
+#It will continually output "yes" while the package is running until it has completed.
 if grep -q "Arch" $version
 then
-	sudo pacman -Syu 1>>$logfile 2>>$errorfile
+	yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
      then 
           echo "An error has occurred while updating. Please check $errorfile for details."
@@ -32,8 +38,7 @@ fi
 #This section is only run if the system is using the APT manager.
 if grep -q "Debian" $version || grep -q "Ubuntu" $version
 then
-	sudo apt update
-	sudo apt upgrade 1>>$logfile 2>>$errorfile
+	sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
 	then
 	     echo "An error has occurred while updating. Please check $errorfile for details."
@@ -41,11 +46,10 @@ then
 fi
 
 #This section is only run if the system uses the Portage package manager.
-#The -auDN flags stand for "--ask","--upate","--deep", and "--newuse".
+#The -uDN flags stand for "--upate","--deep", and "--newuse".
 if grep -q "Gentoo" $version
 then
-	sudo emerge --sync
-	sudo emerge -auDN @world 1>>$logfile 2>>$errorfile
+	sudo emerge --sync && sudo emerge -uDN @world 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ] 
 	then
 	     echo "An error has occurred while updating. Please check $errorfile for details."
@@ -55,7 +59,7 @@ fi
 #This section is only run if the system uses the DNF package manager.
 if grep -q "Rocky" $version || grep -q "RHEL" $version
 then
-	sudo dnf update 1>>$logfile 2>>$errorfile
+	sudo dnf update -y 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
 	then
 	     echo "An error has occurred while updating. Please check $errorfile for details."
