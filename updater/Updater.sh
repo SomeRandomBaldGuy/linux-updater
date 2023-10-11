@@ -30,8 +30,8 @@ sleep 1
 #It will continually output "yes" while the package is running until it has completed.
 if grep -q "Arch" $version
 then
-	yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
-	if [ $? -ne 0 ]
+     yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
+     if [ $? -ne 0 ]
      then 
           echo $failed
      else
@@ -42,36 +42,36 @@ fi
 #This section is only run if the system is using the APT manager.
 if grep -q "Debian" $version || grep -q "Ubuntu" $version
 then
-	sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
-	if [ $? -ne 0 ]
-	then
-	     echo $failed
-	else
+     sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
+     if [ $? -ne 0 ]
+     then
+          echo $failed
+     else
           echo $passed
-	fi
+     fi
 fi
 
 #This section is only run if the system uses the Portage package manager.
 #The -uDN flags stand for "--upate","--deep", and "--newuse".
 if grep -q "Gentoo" $version
 then
-	sudo emerge --sync && sudo emerge -uDN @world 1>>$logfile 2>>$errorfile
-	if [ $? -ne 0 ] 
-	then
-	     echo $failed
-	else
+     sudo emerge --sync && sudo emerge -uDN @world 1>>$logfile 2>>$errorfile
+     if [ $? -ne 0 ] 
+     then
+          echo $failed
+     else
           echo $passed
-	fi
+     fi
 fi
 
 #This section is only run if the system uses the DNF package manager.
 if grep -q "Rocky" $version || grep -q "RHEL" $version
 then
-	sudo dnf update -y 1>>$logfile 2>>$errorfile
-	if [ $? -ne 0 ]
-	then
-	     echo $failed
-	else
+     sudo dnf update -y 1>>$logfile 2>>$errorfile
+     if [ $? -ne 0 ]
+     then
+          echo $failed
+     else
           echo $passed
 	fi  
 fi
