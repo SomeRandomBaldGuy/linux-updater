@@ -1,4 +1,4 @@
-# Update.sh
+# Updater.sh
 
 This is a small project I'm working on to create a "universal updater" that works on *most* major Linux based systems.
 
