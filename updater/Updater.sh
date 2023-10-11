@@ -10,6 +10,8 @@ now=$(date)
 version=/etc/os-release
 logfile=/var/log/updater/updater-success.log
 errorfile=/var/log/updater/updater-error.log
+passed="The script has completed successfully. Please cheack $logfile for details."
+failed="An error has occurred while updating. Please check $errorfile for details."
 
 echo "Hello, welcome to my updater script."
 echo 
@@ -31,7 +33,9 @@ then
 	yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
      then 
-          echo "An error has occurred while updating. Please check $errorfile for details."
+          echo $failed
+     else
+          echo $passed
      fi
 fi
 
@@ -41,7 +45,9 @@ then
 	sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
 	then
-	     echo "An error has occurred while updating. Please check $errorfile for details."
+	     echo $failed
+	else
+          echo $passed
 	fi
 fi
 
@@ -52,7 +58,9 @@ then
 	sudo emerge --sync && sudo emerge -uDN @world 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ] 
 	then
-	     echo "An error has occurred while updating. Please check $errorfile for details."
+	     echo $failed
+	else
+          echo $passed
 	fi
 fi
 
@@ -62,7 +70,9 @@ then
 	sudo dnf update -y 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
 	then
-	     echo "An error has occurred while updating. Please check $errorfile for details."
+	     echo $failed
+	else
+          echo $passed
 	fi  
 fi
 
