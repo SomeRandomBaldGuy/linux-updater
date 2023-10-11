@@ -73,7 +73,7 @@ then
           echo $failed
      else
           echo $passed
-	fi  
+     fi  
 fi
 
 #This script doesn't use any of the removal commands such as 'apt autoremove' for Debian or '--depclean' for Gentoo.
