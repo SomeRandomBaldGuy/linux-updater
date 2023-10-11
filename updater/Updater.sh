@@ -32,11 +32,17 @@ if grep -q "Arch" $version
 then
 	yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
 	if [ $? -ne 0 ]
+
      then 
           echo $failed
      else
           echo $passed
      fi
+
+     	then 
+          echo "An error has occurred while updating. Please check $errorfile for details."
+     	fi
+
 fi
 
 #This section is only run if the system is using the APT manager.
