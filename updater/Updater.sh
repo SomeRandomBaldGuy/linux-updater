@@ -12,6 +12,7 @@ logfile=/var/log/updater/updater-success.log
 errorfile=/var/log/updater/updater-error.log
 passed="The script has completed successfully. Please cheack $logfile for details."
 failed="An error has occurred while updating. Please check $errorfile for details."
+completion="The script will now close. Thank you for checking it out."
 
 echo "Hello, welcome to my updater script."
 echo 
@@ -75,6 +76,10 @@ then
           echo $passed
      fi  
 fi
+
+echo
+sleep 1
+echo $completion
 
 #This script doesn't use any of the removal commands such as 'apt autoremove' for Debian or '--depclean' for Gentoo.
 #I omitted those functions due to how damaging they can be if done incorrectly. 
