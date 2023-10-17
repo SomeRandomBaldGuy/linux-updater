@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #This script functions as a universal updater for various distributions of Linux.
-
 #This script will be installed in the /usr/local/bin to avoid conflicting with any system installed binaries.
 #if you wish to limit who can edit this script you may need to run "sudo chown" and modify it to your needs.
 #It will output logs to a purpose built log directory in /var/log such as "updater" with both pass and fail logs.
@@ -27,13 +26,13 @@ check_exit_status() {
 echo "Hello, welcome to my updater script."
 echo 
 sleep 1
-
 echo "The current system time and date is: $now"
 echo "You are currently logged into: $HOSTNAME"
 echo "You are currently logged in as: $USER"
 echo 
-
-echo "The script will now check your distribution and apply any available updates."
+sleep 1
+echo "The script will now check your distribution, and apply any available updates."
+echo 
 sleep 1
 
 #This section is only run if the system is using Pacman.
