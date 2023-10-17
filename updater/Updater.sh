@@ -14,6 +14,16 @@ passed="The script has completed successfully. Please cheack $logfile for detail
 failed="An error has occurred while updating. Please check $errorfile for details."
 completion="The script will now close. Thank you for checking it out."
 
+#This function will check the exit code of the update command and run accordingly.
+check_exit_status() {
+     if [ $? -ne 0 ]
+     then 
+          echo $failed
+     else
+          echo $passed
+     fi
+}
+
 echo "Hello, welcome to my updater script."
 echo 
 sleep 1
@@ -32,24 +42,14 @@ sleep 1
 if grep -q "Arch" $version
 then
      yes | sudo pacman -Syu 1>>$logfile 2>>$errorfile
-     if [ $? -ne 0 ]
-     then 
-          echo $failed
-     else
-          echo $passed
-     fi
+     check_exit_status
 fi
 
 #This section is only run if the system is using the APT manager.
 if grep -q "Debian" $version || grep -q "Ubuntu" $version
 then
      sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
-     if [ $? -ne 0 ]
-     then
-          echo $failed
-     else
-          echo $passed
-     fi
+     check_exit_status
 fi
 
 #This section is only run if the system uses the Portage package manager.
@@ -57,24 +57,14 @@ fi
 if grep -q "Gentoo" $version
 then
      sudo emerge --sync && sudo emerge -uDN @world 1>>$logfile 2>>$errorfile
-     if [ $? -ne 0 ] 
-     then
-          echo $failed
-     else
-          echo $passed
-     fi
+     check_exit_status
 fi
 
 #This section is only run if the system uses the DNF package manager.
 if grep -q "Rocky" $version || grep -q "RHEL" $version
 then
      sudo dnf update -y 1>>$logfile 2>>$errorfile
-     if [ $? -ne 0 ]
-     then
-          echo $failed
-     else
-          echo $passed
-     fi  
+     check_exit_status
 fi
 
 echo
