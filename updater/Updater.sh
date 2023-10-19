@@ -7,8 +7,8 @@
 
 now=$(date)
 version=/etc/os-release
-logfile=/var/log/updater/updater-success.log
-errorfile=/var/log/updater/updater-error.log
+logfile=/var/log/updater/success.log
+errorfile=/var/log/updater/error.log
 passed="The script has completed successfully. Please cheack $logfile for details."
 failed="An error has occurred while updating. Please check $errorfile for details."
 completion="The script will now close. Thank you for checking it out."
