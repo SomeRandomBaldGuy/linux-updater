@@ -11,7 +11,7 @@ logfile=/var/log/updater/success.log
 errorfile=/var/log/updater/error.log
 passed="The script has completed successfully. Please cheack $logfile for details."
 failed="An error has occurred while updating. Please check $errorfile for details."
-completion="The script will now close. Thank you for checking it out."
+completion="The script will now close, thank you.
 
 #This function will check the exit code of the update command and run accordingly.
 check_exit_status() {
