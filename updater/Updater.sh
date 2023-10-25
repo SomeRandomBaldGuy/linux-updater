@@ -11,7 +11,7 @@ logfile=/var/log/updater/success.log
 errorfile=/var/log/updater/error.log
 passed="The script has completed successfully. Please cheack $logfile for details."
 failed="An error has occurred while updating. Please check $errorfile for details."
-completion="The script will now close, thank you.
+completion="The script will now close, thank you."
 
 #This function will check the exit code of the update command and run accordingly.
 check_exit_status() {
@@ -45,7 +45,7 @@ then
 fi
 
 #This section is only run if the system is using the APT manager.
-if grep -q "Debian" $version || grep -q "Ubuntu" $version
+if grep -q "Debian" $version || grep -q "Ubuntu" $version || grep -q "Pop!_OS" $version
 then
      sudo apt update && sudo apt upgrade -y 1>>$logfile 2>>$errorfile
      check_exit_status
@@ -60,7 +60,7 @@ then
 fi
 
 #This section is only run if the system uses the DNF package manager.
-if grep -q "Rocky" $version || grep -q "RHEL" $version
+if grep -q "Rocky" $version || grep -q "RHEL" $version || grep -q "Fedora" $version
 then
      sudo dnf update -y 1>>$logfile 2>>$errorfile
      check_exit_status
