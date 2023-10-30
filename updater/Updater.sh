@@ -14,7 +14,7 @@ failed="An error has occurred while updating. Please check $errorfile for detail
 completion="The script will now close, thank you."
 
 #This function will check the exit code of the update command and run accordingly.
-check_exit_status() { if [ $? -ne 0 ]; then echo $failed; else echo $passed; fi }
+check_exit_status() { if [ $? -ne 0 ]; then echo "$failed"; else echo "$passed"; fi }
 
 echo "Hello, welcome to my updater script."; echo; sleep 1; echo "The current system time and date is: $now"; echo "You are currently logged into: $HOSTNAME"; echo "You are currently logged in as: $USER"; echo; sleep 1; echo "The script will now check your distribution, and apply any available updates."; echo; sleep 1
 
@@ -33,7 +33,7 @@ if grep -q "Gentoo" $version; then sudo emerge --sync && sudo emerge -uDN @world
 #This section is only run if the system uses the DNF package manager.
 if grep -q "Rocky" $version || grep -q "RHEL" $version || grep -q "Fedora" $version; then sudo dnf update -y 1>>$logfile 2>>$errorfile; check_exit_status; fi
 
-echo; sleep 1; echo $completion
+echo; sleep 1; echo "$completion";
 
 #This script doesn't use any of the removal commands such as 'apt autoremove' for Debian or '--depclean' for Gentoo.
 #I omitted those functions due to how damaging they can be if done incorrectly. 
